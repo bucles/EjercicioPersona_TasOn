@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html ng-app="personas">
+    <head>
+        <title>Start Page</title>
+        <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" /> 
+        <!-- css -->
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>       
+        <!-- js -->
+        <script src="lib/dependencies/angular.min.js"></script>
+        <script src="lib/dependencies/angular-resource.min.js"></script>
+        <script src="lib/dependencies/jquery.min.js"></script>
+        <script src="lib/dependencies/ui-bootstrap-tpls.min.js"></script>
+        <script src="lib/dependencies/ng-grid.min.js"></script>
+        <script src="js/persona.js"></script>
+    </head>
+    <body>
+        <h3>Persona</h3> 
+        <br/>
+
+        <!-- Specify a Angular controller script that binds Javascript variables to the feedback messages.-->
+        <div class="mensajes" ng-controller="mensajesControlador">
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+        </div>
+
+        <br>
+
+
+        <div  ng-controller="personaControlador">
+
+            <div class="acciones">                
+
+                <div >
+                    <h3>Acciones</h3>
+                    <label for="cedulaBorrar">Nro.Cedula</label>
+                    <input id="cedulaBorrar" name="percedulaBorrar" type="number" class="form-control" 
+                           ng-model="percedula"> 
+                </div>
+                <div >
+                    <button type="button" class="btn btn-primary" ng-click="buscarPersona(percedula)">Buscar</button>
+                    <button type="button" class="btn btn-danger" ng-click="borrarPersona(percedula)" >Eliminar</button>                       
+                </div>
+
+            </div>
+            <div class="form">
+                <h3>Datos Persona</h3>
+                <form name="formPersona" id="frmPer" ng-submit="updatePerson()" novalidate>
+                    <div class="form-group" ng-class="{'has-error' : formPersona.percedula.$invalid && formPersona.percedula.$dirty}">
+                        <label for="cedula">Nro. Cedula</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.percedula.$valid && formPersona.percedula.$dirty}"></span>
+                        <input id="cedula" name="percedula" type="number"
+                               class="form-control" 
+                               required="true" 
+                               ng-model="persona.percedula"/>
+                        <p class="help-block" ng-show="formPersona.percedula.$error.required">campo requerido.</p>                
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : formPersona.nombres.$invalid && formPersona.nombres.$dirty}">
+                        <label for="nombres">Nombres:</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.nombres.$valid && formPersona.nombres.$dirty}"></span>
+                        <input id="nombres" name="nombres" type="text" class="form-control" 
+                               ng-model="persona.pernombres" maxlength="100" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.nombres.$error.required">campo requerido.</p>
+                        <p class="help-block" ng-show="formPersona.nombres.$error.minlength">Deben ser 10 caracteres.</p>
+                        <p class="help-block" ng-show="formPersona.nombres.$error.maxlength">Deben ser 100 caracteres.</p>
+
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-error' : formPersona.perapellidopaterno.$invalid && formPersona.perapellidopaterno.$dirty}">
+                        <label for="apPaterno">Apellido Materno</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.perapellidopaterno.$valid && formPersona.perapellidopaterno.$dirty}"></span>
+                        <input id="apPaterno" name="perapellidopaterno" type="text" class="form-control" 
+                               ng-model="persona.perapellidopaterno" maxlength="100" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.perapellidopaterno.$error.required">campo requerido.</p>
+                        <p class="help-block" ng-show="formPersona.perapellidopaterno.$error.minlength">Deben ser 10 caracteres.</p>
+                        <p class="help-block" ng-show="formPersona.perapellidopaterno.$error.maxlength">Deben ser 100 caracteres.</p>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : formPersona.perapellidomaterno.$invalid && formPersona.perapellidomaterno.$dirty}">
+                        <label for="apPMaterno">Apellido Materno</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.perapellidomaterno.$valid && formPersona.perapellidomaterno.$dirty}"></span>
+                        <input id="apPMaterno" name="perapellidomaterno" type="text" class="form-control" 
+                               ng-model="persona.perapellidomaterno" maxlength="100" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.perapellidomaterno.$error.required">campo requerido.</p>
+                        <p class="help-block" ng-show="formPersona.perapellidomaterno.$error.minlength">Deben ser 10 caracteres.</p>
+                        <p class="help-block" ng-show="formPersona.perapellidomaterno.$error.maxlength">Deben ser 100 caracteres.</p>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : formPersona.perestadocivil.$invalid && formPersona.perestadocivil.$dirty}">
+                        <label for="estadoCivil">Estado civil</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.perestadocivil.$valid && formPersona.perestadocivil.$dirty}"></span>
+                        <input id="estadoCivil" name="perestadocivil" type="text" class="form-control" 
+                               ng-model="persona.perestadocivil" maxlength="40" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.perestadocivil.$error.required">campo requerido.</p>
+                        <p class="help-block" ng-show="formPersona.perestadocivil.$error.minlength">Deben ser 10 caracteres.</p>
+                        <p class="help-block" ng-show="formPersona.perestadocivil.$error.maxlength">Deben ser 40 caracteres.</p>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : formPersona.perfechanacimiento.$invalid && formPersona.perfechanacimiento.$dirty}">
+                        <label for="fechaNac">Fecha Nac.</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.perfechanacimiento.$valid && formPersona.perfechanacimiento.$dirty}"></span>
+                        <input id="fechaNac" name="perfechanacimiento" type="date" class="form-control" 
+                               ng-model="persona.perfechanacimiento" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.perfechanacimiento.$error.required">campo requerido.</p>
+
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-error' : formPersona.pertelefono.$invalid && formPersona.pertelefono.$dirty}">
+                        <label for="telefono">Telefono</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.pertelefono.$valid && formPersona.pertelefono.$dirty}"></span>
+                        <input id="telefono" name="pertelefono" type="number" class="form-control"
+                               ng-model="persona.pertelefono" maxlength="10" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.pertelefono.$error.required">campo requerido.</p>
+
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : formPersona.pergenero.$invalid && formPersona.pergenero.$dirty}">
+                        <label for="genero">Genero</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.pergenero.$valid && formPersona.pergenero.$dirty}"></span>
+                        <input id="genero" name="pergenero" type="text" class="form-control" 
+                               ng-model="persona.pergenero" maxlength="30" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.pergenero.$error.required">campo requerido.</p>
+                        <p class="help-block" ng-show="formPersona.pergenero.$error.minlength">Deben ser 10 caracteres.</p>
+                        <p class="help-block" ng-show="formPersona.pergenero.$error.maxlength">Max 30 caracteres.</p>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : formPersona.pernacionalidad.$invalid && formPersona.pernacionalidad.$dirty}">
+                        <label for="nacionalidad">Nacionalidad</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.pernacionalidad.$valid && formPersona.pernacionalidad.$dirty}"></span>
+                        <input id="nacionalidad" name="pernacionalidad" type="text" class="form-control"
+                               ng-model="persona.pernacionalidad" maxlength="40" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.pernacionalidad.$error.required">campo requerido.</p>
+                        <p class="help-block" ng-show="formPersona.pernacionalidad.$error.minlength">Deben ser 10 caracteres.</p>
+                        <p class="help-block" ng-show="formPersona.pernacionalidad.$error.maxlength">Max. 40 caracteres.</p>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : formPersona.perlugarnacimiento.$invalid && formPersona.perlugarnacimiento.$dirty}">
+                        <label for="lugarNacimiento">Lugar Nacimiento</label>
+                        <span ng-class="{'glyphicon glyphicon-ok' :  formPersona.perlugarnacimiento.$valid && formPersona.perlugarnacimiento.$dirty}"></span>
+                        <input id="lugarNacimiento" name="perlugarnacimiento" type="text" class="form-control" 
+                               ng-model="persona.perlugarnacimiento" maxlength="100" required="true"
+                               />
+                        <p class="help-block" ng-show="formPersona.perlugarnacimiento.$error.required">campo requerido.</p>
+                        <p class="help-block" ng-show="formPersona.perlugarnacimiento.$error.minlength">Deben ser 10 caracteres.</p>
+                        <p class="help-block" ng-show="formPersona.perlugarnacimiento.$error.maxlength">Max. 100 caracteres.</p>
+                    </div>
+                    <div class="buttons">                
+                        <button type="submit" class="btn btn-success" ng-disabled="formPersona.$invalid">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>
