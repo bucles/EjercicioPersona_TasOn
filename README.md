@@ -13,9 +13,9 @@ y para el BackEnd JavaEE
     Ver en la siguiente guia: https://docs.oracle.com/cd/E21454_01/html/821-2531/gknen.html
     
 2.- Crear la Base de datos y conexion
- 	- Se utilizo la base de datos Java DB (Derby).
-	- Nombre de la base de datos: persona, usuario: root, password:root
- 	- Para crear la base de datos seguir ver la siguiente guia: https://netbeans.org/kb/docs/ide/java-db.html#starting
+ 	* Se utilizó la base de datos Java DB (Derby).
+	* Nombre de la base de datos: persona, usuario: root, password:root
+ 	* Para crear la base de datos seguir ver la siguiente guia: https://netbeans.org/kb/docs/ide/java-db.html#starting
   y avanzar hasta el punto "Connecting to the Database",
 	  luego saltarse al punto "Recreating Tables from a Different Database" y usar el archivo PERSONA.grab para generar la 
 	  correspondiente tabla.
